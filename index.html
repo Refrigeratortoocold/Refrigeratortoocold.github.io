@@ -45,7 +45,7 @@
         }
         button {
             display: inline-block;
-            width: 100%;
+            width: calc(50% - 10px);
             padding: 12px;
             background-color: #4CAF50;
             color: white;
@@ -77,6 +77,11 @@
             margin-right: 10px;
             flex-shrink: 0;
         }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
         footer {
             margin-top: 30px;
             font-size: 0.9em;
@@ -98,11 +103,14 @@
         <label for="values">华文，国文，英文，数学，生物，物理，化学，学会，社科，体育，选修（若有）</label>
         <input type="text" id="values" placeholder="e.g., 1, 2, 3"><br><br>
 
-        <button onclick="calculateAverage()">Calculate Average</button>
+        <div class="button-container">
+            <button onclick="calculateAverage()">Calculate Average</button>
+            <button onclick="resetForm()" style="background-color: #f44336;">Reset</button>
+        </div>
 
         <div id="output"></div>
 
-        <footer>Powered by Jia Sheng</footer>
+        <footer>Powered by Your Company</footer>
     </div>
 
     <script>
@@ -111,20 +119,51 @@
             const valuesInput = document.getElementById('values').value.trim();
             const valuesArray = valuesInput.split(',').map(value => parseInt(value.trim()));
 
+            if (valuesArray.some(isNaN)) {
+                document.getElementById('output').textContent = "Please enter valid numbers separated by commas.";
+                return;
+            }
+
             let avg;
             if (lol === 1) {
+                if (valuesArray.length !== 11) {
+                    document.getElementById('output').textContent = "Please enter exactly 11 values.";
+                    return;
+                }
                 const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
                 const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
                 const i = valuesArray[8], j = valuesArray[9], k = valuesArray[10];
                 avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j + k) / 16.5;
             } else {
+                if (valuesArray.length !== 10) {
+                    document.getElementById('output').textContent = "Please enter exactly 10 values.";
+                    return;
+                }
                 const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
                 const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
                 const i = valuesArray[8], j = valuesArray[9];
                 avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j) / 15.5;
             }
 
-            document.getElementById('output').textContent = `Average: ${avg.toFixed(6)}`;
+            const highest = Math.max(...valuesArray);
+            const lowest = Math.min(...valuesArray);
+            const sortedValues = valuesArray.slice().sort((a, b) => a - b);
+            const median = (sortedValues.length % 2 === 0) ? 
+                           (sortedValues[sortedValues.length / 2 - 1] + sortedValues[sortedValues.length / 2]) / 2 : 
+                           sortedValues[Math.floor(sortedValues.length / 2)];
+
+            document.getElementById('output').innerHTML = `
+                Average: ${avg.toFixed(6)}<br>
+                Highest: ${highest}<br>
+                Lowest: ${lowest}<br>
+                Median: ${median}
+            `;
+        }
+
+        function resetForm() {
+            document.getElementById('lol').value = 1;
+            document.getElementById('values').value = '';
+            document.getElementById('output').textContent = '';
         }
     </script>
 </body>
