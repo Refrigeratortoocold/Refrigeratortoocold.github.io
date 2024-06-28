@@ -130,10 +130,14 @@
         <h1>Calculate Average</h1>
 
         <div class="input-container">
-            <label for="lol">Enter 1 or 2:</label>
-            <input type="number" id="lol" value="1">
-        </div>
-        <label for="lol">有选修1 没有选修2</label><br><br>
+            <label>Select Option:</label>
+            <div>
+                <input type="radio" id="option1" name="option" value="1" checked>
+                <label for="option1">Option 1 (Divide by 16.5)</label><br>
+                <input type="radio" id="option2" name="option" value="2">
+                <label for="option2">Option 2 (Divide by 15.5)</label>
+            </div>
+        </div><br>
 
         <label for="values">Enter values separated by commas:</label>
         <label for="values">华文，国文，英文，数学，生物，物理，化学，学会，社科，体育，选修（若有）</label>
@@ -151,7 +155,7 @@
 
     <script>
         function calculateAverage() {
-            const lol = parseInt(document.getElementById('lol').value);
+            const option = document.querySelector('input[name="option"]:checked').value;
             const valuesInput = document.getElementById('values').value.trim();
             const valuesArray = valuesInput.split(',').map(value => parseInt(value.trim()));
 
@@ -162,7 +166,7 @@
             }
 
             let avg;
-            if (lol === 1) {
+            if (option === '1') {
                 if (valuesArray.length !== 11) {
                     document.getElementById('output').textContent = "Please enter exactly 11 values.";
                     showNotification('Please enter exactly 11 values.', 'error');
@@ -202,7 +206,7 @@
         }
 
         function resetForm() {
-            document.getElementById('lol').value = 1;
+            document.getElementById('option1').checked = true;
             document.getElementById('values').value = '';
             document.getElementById('output').textContent = '';
             showNotification('Form has been reset.', 'success');
