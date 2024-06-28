@@ -82,10 +82,46 @@
             justify-content: space-between;
             gap: 10px;
         }
+        .notification {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .notification.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .notification.error {
+            background-color: #f44336;
+            color: white;
+        }
         footer {
             margin-top: 30px;
             font-size: 0.9em;
             color: #777;
+        }
+        .dynamic-subjects {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .dynamic-subjects .subject {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .dynamic-subjects .subject input {
+            margin-right: 10px;
+            flex: 1;
+        }
+        .dynamic-subjects .subject button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -121,6 +157,7 @@
 
             if (valuesArray.some(isNaN)) {
                 document.getElementById('output').textContent = "Please enter valid numbers separated by commas.";
+                showNotification('Please enter valid numbers separated by commas.', 'error');
                 return;
             }
 
@@ -128,6 +165,7 @@
             if (lol === 1) {
                 if (valuesArray.length !== 11) {
                     document.getElementById('output').textContent = "Please enter exactly 11 values.";
+                    showNotification('Please enter exactly 11 values.', 'error');
                     return;
                 }
                 const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
@@ -137,6 +175,7 @@
             } else {
                 if (valuesArray.length !== 10) {
                     document.getElementById('output').textContent = "Please enter exactly 10 values.";
+                    showNotification('Please enter exactly 10 values.', 'error');
                     return;
                 }
                 const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
@@ -158,13 +197,36 @@
                 Lowest: ${lowest}<br>
                 Median: ${median}
             `;
+            showNotification('Calculation completed successfully.', 'success');
+            saveToLocalStorage();
         }
 
         function resetForm() {
             document.getElementById('lol').value = 1;
             document.getElementById('values').value = '';
             document.getElementById('output').textContent = '';
+            showNotification('Form has been reset.', 'success');
+            localStorage.removeItem('values');
         }
-    </script>
-</body>
-</html>
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        function saveToLocalStorage() {
+            const values = document.getElementById('values').value;
+            localStorage.setItem('values', values);
+        }
+
+        function loadFromLocalStorage() {
+            const values = localStorage.getItem('values');
+            if (values) {
+                document.getElementById('values').
