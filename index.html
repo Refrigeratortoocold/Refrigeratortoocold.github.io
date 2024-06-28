@@ -24,14 +24,17 @@
             const valuesInput = document.getElementById('values').value.trim();
             const valuesArray = valuesInput.split(',').map(value => parseInt(value.trim()));
 
-            let sum = 0;
-            valuesArray.forEach(value => sum += value);
-
             let avg;
             if (lol === 1) {
-                avg = sum / valuesArray.length;
+                const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
+                const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
+                const i = valuesArray[8], j = valuesArray[9], k = valuesArray[10];
+                avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j + k) / 16.5;
             } else {
-                avg = sum / (valuesArray.length - 1); // Adjusted for different count if lol is 2
+                const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
+                const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
+                const i = valuesArray[8], j = valuesArray[9];
+                avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j) / 15.5;
             }
 
             document.getElementById('output').textContent = `Average: ${avg.toFixed(6)}`;
