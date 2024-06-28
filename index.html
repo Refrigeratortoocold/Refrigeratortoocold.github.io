@@ -146,7 +146,7 @@
 
         <div id="output"></div>
 
-        <footer>Powered by Jia Sheng</footer>
+        <footer>Powered by Your Company</footer>
     </div>
 
     <script>
@@ -229,4 +229,11 @@
         function loadFromLocalStorage() {
             const values = localStorage.getItem('values');
             if (values) {
-                document.getElementById('values').
+                document.getElementById('values').value = values;
+            }
+        }
+
+        window.onload = loadFromLocalStorage;
+    </script>
+</body>
+</html>
