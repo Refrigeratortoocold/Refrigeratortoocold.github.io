@@ -3,62 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Run C++ Code</title>
+    <title>Calculate Average</title>
 </head>
 <body>
-    <h1>Run C++ Code</h1>
-    <textarea id="cppCode" rows="20" cols="80">
-// Source: https://usaco.guide/general/io
+    <h1>Calculate Average</h1>
 
-#include <bits/stdc++.h>
-using namespace std;
+    <label for="lol">Enter 1 or 2:</label>
+    <input type="number" id="lol" value="1"><br><br>
 
-int main() {
-    int lol;
-    cin >> lol;
-    if(lol == 1) {
-        int a, b, c, d, e, f, g, h, i, j, k;
-        cin >> a >> b >> c >> d >> e >> f >> g >> h >> i >> j >> k;
-        double avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j + k) / 16.5;
-        cout << setprecision(220) << avg << endl;
-    } else {
-        int a, b, c, d, e, f, g, h, i, j;
-        cin >> a >> b >> c >> d >> e >> f >> g >> h >> i >> j;
-        double avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j) / 15.5;
-        cout << setprecision(220) << avg << endl;
-    }
-}
-    </textarea>
-    <br>
-    <label for="userInput">Input:</label>
-    <textarea id="userInput" rows="5" cols="80" placeholder="Enter input values here, separated by spaces"></textarea>
-    <br>
-    <button onclick="runCode()">Run Code</button>
-    <pre id="output"></pre>
+    <label for="values">Enter values separated by commas:</label><br>
+    <input type="text" id="values" placeholder="e.g., 1, 2, 3"><br><br>
+
+    <button onclick="calculateAverage()">Calculate Average</button><br><br>
+
+    <div id="output"></div>
 
     <script>
-        async function runCode() {
-            const code = document.getElementById('cppCode').value;
-            const input = document.getElementById('userInput').value;
-            const outputElement = document.getElementById('output');
+        function calculateAverage() {
+            const lol = parseInt(document.getElementById('lol').value);
+            const valuesInput = document.getElementById('values').value.trim();
+            const valuesArray = valuesInput.split(',').map(value => parseInt(value.trim()));
 
-            const response = await fetch('https://api.jdoodle.com/v1/execute', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    script: code,
-                    language: "cpp",
-                    versionIndex: "0",
-                    stdin: input,
-                    clientId: "1b6d1c2f555c24272cd7074928716afc", // Replace with your JDoodle client ID
-                    clientSecret: "9c014833f745d4b9aa3bcf1552ec2e23ca3626f7144fd780b10de9e7de59600e" // Replace with your JDoodle client secret
-                }),
-            });
+            let sum = 0;
+            valuesArray.forEach(value => sum += value);
 
-            const data = await response.json();
-            outputElement.textContent = data.output || data.error;
+            let avg;
+            if (lol === 1) {
+                avg = sum / valuesArray.length;
+            } else {
+                avg = sum / (valuesArray.length - 1); // Adjusted for different count if lol is 2
+            }
+
+            document.getElementById('output').textContent = `Average: ${avg.toFixed(6)}`;
         }
     </script>
 </body>
