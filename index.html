@@ -17,10 +17,12 @@
     </style>
     <script>
         const questions = [
+            // Example questions added manually
             {
                 question: "如下图 为何种组件之符号？",
                 options: ["发光二极管", "光敏晶体管", "光耦合器", "雷射二极管"],
-                answer: "光耦合器"
+                answer: "光耦合器",
+                img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAAAi0EVlAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANJJREFUeNqkkcENgDAQRh/h5e5SL4EeCK+AFxk2LO/IrNO1lgL8D1uBb/vMznkjdLyAvIWvDZHBvpyxuKgZXtcuWL2nBLZZUl3g9tI7YDWOp6XJmZkvv99Z8DBZQ9BYAAAAAElFTkSuQmCC" // Example image encoded as base64
             },
             {
                 question: "下图 IC 符号第一支接脚位置在",
@@ -50,17 +52,16 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
+            return array;
         }
 
         function startQuiz() {
-            const selectedQuestions = questions.slice();
-            shuffle(selectedQuestions);
-            const quizQuestions = selectedQuestions.slice(0, 50);
+            const selectedQuestions = shuffle(questions).slice(0, 50);
 
             const quizContainer = document.getElementById('quiz');
             quizContainer.innerHTML = '';
 
-            quizQuestions.forEach((q, index) => {
+            selectedQuestions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
 
@@ -68,7 +69,13 @@
                 questionText.textContent = (index + 1) + '. ' + q.question;
                 questionDiv.appendChild(questionText);
 
-                q.options.forEach((option, i) => {
+                if (q.img) {
+                    const img = document.createElement('img');
+                    img.src = q.img;
+                    questionDiv.appendChild(img);
+                }
+
+                q.options.forEach(option => {
                     const optionLabel = document.createElement('label');
                     const optionInput = document.createElement('input');
                     optionInput.type = 'radio';
@@ -85,23 +92,24 @@
 
             const submitButton = document.createElement('button');
             submitButton.textContent = 'Submit';
-            submitButton.onclick = checkAnswers;
+            submitButton.onclick = () => checkAnswers(selectedQuestions);
             quizContainer.appendChild(submitButton);
         }
 
-        function checkAnswers() {
-            const quizQuestions = document.querySelectorAll('.question');
+        function checkAnswers(selectedQuestions) {
             let score = 0;
-
-            quizQuestions.forEach((q, index) => {
-                const selectedOption = q.querySelector('input[type=radio]:checked');
-                if (selectedOption && selectedOption.value === questions[index].answer) {
-                    score += 2;
-                }
+            const quizContainer = document.getElementById('quiz');
+            selectedQuestions.forEach((q, index) => {
+                const options = quizContainer.querySelectorAll(`input[name="question${index}"]`);
+                options.forEach(option => {
+                    if (option.checked && option.value === q.answer) {
+                        score += 2;
+                    }
+                });
             });
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = 'Your score: ' + score + ' out of ' + (quizQuestions.length * 2);
+            resultDiv.textContent = `Your score: ${score} out of ${selectedQuestions.length * 2}`;
         }
 
         window.onload = startQuiz;
