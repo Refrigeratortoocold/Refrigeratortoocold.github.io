@@ -3,121 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Certification Quiz</title>
+    <title>Jumpscare</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
         }
-        .question {
+        h1 {
+            font-size: 2em;
             margin-bottom: 20px;
         }
-        .result {
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #scaryImage {
+            display: none;
+            width: 100%;
+            max-width: 600px;
             margin-top: 20px;
         }
     </style>
-    <script>
-        const questions = [
-            // Example questions added manually
-            {
-                question: "如下图 为何种组件之符号？",
-                options: ["发光二极管", "光敏晶体管", "光耦合器", "雷射二极管"],
-                answer: "光耦合器",
-                img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAAAi0EVlAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANJJREFUeNqkkcENgDAQRh/h5e5SL4EeCK+AFxk2LO/IrNO1lgL8D1uBb/vMznkjdLyAvIWvDZHBvpyxuKgZXtcuWL2nBLZZUl3g9tI7YDWOp6XJmZkvv99Z8DBZQ9BYAAAAAElFTkSuQmCC" // Example image encoded as base64
-            },
-            {
-                question: "下图 IC 符号第一支接脚位置在",
-                options: ["A 脚", "B 脚", "C 脚", "D 脚"],
-                answer: "B 脚"
-            },
-            {
-                question: "下图组件符号为",
-                options: ["N 信道 JFET", "P 通道 DE-MOSFET", "N 通道 E-MOSFET", "PNP 晶体管"],
-                answer: "N 通道 E-MOSFET"
-            },
-            {
-                question: "下图电子电路符号为",
-                options: ["电压源", "电流源", "伏特计", "安培计"],
-                answer: "电流源"
-            },
-            {
-                question: "下图符号为",
-                options: ["电灯", "电话端子盘", "电力分电盘", "电力总配电盘"],
-                answer: "电力总配电盘"
-            }
-            // Add more questions here
-        ];
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function startQuiz() {
-            const selectedQuestions = shuffle(questions).slice(0, 50);
-
-            const quizContainer = document.getElementById('quiz');
-            quizContainer.innerHTML = '';
-
-            selectedQuestions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-
-                const questionText = document.createElement('p');
-                questionText.textContent = (index + 1) + '. ' + q.question;
-                questionDiv.appendChild(questionText);
-
-                if (q.img) {
-                    const img = document.createElement('img');
-                    img.src = q.img;
-                    questionDiv.appendChild(img);
-                }
-
-                q.options.forEach(option => {
-                    const optionLabel = document.createElement('label');
-                    const optionInput = document.createElement('input');
-                    optionInput.type = 'radio';
-                    optionInput.name = 'question' + index;
-                    optionInput.value = option;
-                    optionLabel.appendChild(optionInput);
-                    optionLabel.appendChild(document.createTextNode(option));
-                    questionDiv.appendChild(optionLabel);
-                    questionDiv.appendChild(document.createElement('br'));
-                });
-
-                quizContainer.appendChild(questionDiv);
-            });
-
-            const submitButton = document.createElement('button');
-            submitButton.textContent = 'Submit';
-            submitButton.onclick = () => checkAnswers(selectedQuestions);
-            quizContainer.appendChild(submitButton);
-        }
-
-        function checkAnswers(selectedQuestions) {
-            let score = 0;
-            const quizContainer = document.getElementById('quiz');
-            selectedQuestions.forEach((q, index) => {
-                const options = quizContainer.querySelectorAll(`input[name="question${index}"]`);
-                options.forEach(option => {
-                    if (option.checked && option.value === q.answer) {
-                        score += 2;
-                    }
-                });
-            });
-
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Your score: ${score} out of ${selectedQuestions.length * 2}`;
-        }
-
-        window.onload = startQuiz;
-    </script>
 </head>
 <body>
-    <h1>Welding Certification Quiz</h1>
-    <div id="quiz"></div>
-    <div id="result" class="result"></div>
+    <h1>Are you ready for a surprise?</h1>
+    <button id="scareButton">Click for a Surprise!</button>
+    <img id="scaryImage" src="YOUR_IMAGE_URL" alt="Scary Image">
+    
+    <audio id="scarySound" src="YOUR_SOUND_URL"></audio>
+
+    <script>
+        document.getElementById('scareButton').addEventListener('click', function() {
+            const scaryImage = document.getElementById('scaryImage');
+            const scarySound = document.getElementById('scarySound');
+            
+            // Display the scary image
+            scaryImage.style.display = 'block';
+
+            // Play the scary sound
+            scarySound.play();
+
+            // Add a slight delay for full jumpscare effect
+            setTimeout(function() {
+                alert('Gotcha!');
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
