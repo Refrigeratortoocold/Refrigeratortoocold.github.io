@@ -50,7 +50,7 @@
         }
         button {
             display: inline-block;
-            width: calc(50% - 10px);
+            width: calc(33% - 10px);
             padding: 12px;
             background-color: #4CAF50;
             color: white;
@@ -63,6 +63,12 @@
         }
         button:hover {
             background-color: #45a049;
+        }
+        .clear-btn {
+            background-color: #ff9800;
+        }
+        .clear-btn:hover {
+            background-color: #e68a00;
         }
         #output {
             margin-top: 20px;
@@ -139,6 +145,7 @@
 
         <div class="button-container">
             <button onclick="calculateAverage()">Calculate Average</button>
+            <button onclick="resetForm()" class="clear-btn">Clear All</button>
             <button onclick="resetForm()" style="background-color: #f44336;">Reset</button>
         </div>
 
@@ -178,6 +185,14 @@
 
         function resetForm() {
             document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
+            document.getElementById('output').textContent = '';
+        }
+
+        function clearAllFields() {
+            document.querySelectorAll('input[type="number"], input[type="radio"]').forEach(input => {
+                if (input.type === "radio") input.checked = false;
+                else input.value = '';
+            });
             document.getElementById('output').textContent = '';
         }
     </script>
