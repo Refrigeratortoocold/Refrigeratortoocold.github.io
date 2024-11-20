@@ -30,15 +30,20 @@
             margin-bottom: 20px;
             color: #4CAF50;
         }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
         }
-        input[type="number"], input[type="text"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-top: 8px;
+        .score-grid label {
+            text-align: left;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .score-grid input {
+            width: 100%;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1em;
@@ -64,64 +69,10 @@
             font-size: 1.3em;
             color: #333;
         }
-        .input-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .input-container input {
-            flex: 1;
-        }
-        .input-container label {
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .notification {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .notification.success {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .notification.error {
-            background-color: #f44336;
-            color: white;
-        }
         footer {
             margin-top: 30px;
             font-size: 0.9em;
             color: #777;
-        }
-        .dynamic-subjects {
-            margin-top: 20px;
-            text-align: left;
-        }
-        .dynamic-subjects .subject {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .dynamic-subjects .subject input {
-            margin-right: 10px;
-            flex: 1;
-        }
-        .dynamic-subjects .subject button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -137,11 +88,54 @@
                 <input type="radio" id="option2" name="option" value="2">
                 <label for="option2">无选修课(÷15.5)</label>
             </div>
-        </div><br>
+        </div>
 
-        <label for="values">Enter values separated by commas:</label>
-        <label for="values">华文，国文，英文，数学，生物，物理，化学，学会，社科，体育，选修（若有）</label>
-        <input type="text" id="values" placeholder="e.g., 1, 2, 3"><br><br>
+        <div class="score-grid" id="scoreGrid">
+            <div>
+                <label for="score1">华文</label>
+                <input type="number" id="score1" min="0" max="100">
+            </div>
+            <div>
+                <label for="score2">国文</label>
+                <input type="number" id="score2" min="0" max="100">
+            </div>
+            <div>
+                <label for="score3">英文</label>
+                <input type="number" id="score3" min="0" max="100">
+            </div>
+            <div>
+                <label for="score4">数学</label>
+                <input type="number" id="score4" min="0" max="100">
+            </div>
+            <div>
+                <label for="score5">生物</label>
+                <input type="number" id="score5" min="0" max="100">
+            </div>
+            <div>
+                <label for="score6">物理</label>
+                <input type="number" id="score6" min="0" max="100">
+            </div>
+            <div>
+                <label for="score7">化学</label>
+                <input type="number" id="score7" min="0" max="100">
+            </div>
+            <div>
+                <label for="score8">学会</label>
+                <input type="number" id="score8" min="0" max="100">
+            </div>
+            <div>
+                <label for="score9">社科</label>
+                <input type="number" id="score9" min="0" max="100">
+            </div>
+            <div>
+                <label for="score10">体育</label>
+                <input type="number" id="score10" min="0" max="100">
+            </div>
+            <div id="extraSubject">
+                <label for="score11">选修 (若有)</label>
+                <input type="number" id="score11" min="0" max="100">
+            </div>
+        </div>
 
         <div class="button-container">
             <button onclick="calculateAverage()">Calculate Average</button>
@@ -156,88 +150,36 @@
     <script>
         function calculateAverage() {
             const option = document.querySelector('input[name="option"]:checked').value;
-            const valuesInput = document.getElementById('values').value.trim();
-            const valuesArray = valuesInput.split(',').map(value => parseInt(value.trim()));
+            const scores = [];
 
-            if (valuesArray.some(isNaN)) {
-                document.getElementById('output').textContent = "Please enter valid numbers separated by commas.";
-                showNotification('Please enter valid numbers separated by commas.', 'error');
-                return;
+            // Collect scores
+            for (let i = 1; i <= (option === "1" ? 11 : 10); i++) {
+                const score = parseFloat(document.getElementById(`score${i}`).value.trim());
+                if (isNaN(score)) {
+                    document.getElementById('output').textContent = "Please fill in all scores.";
+                    return;
+                }
+                scores.push(score);
             }
 
             let avg;
             if (option === '1') {
-                if (valuesArray.length !== 11) {
-                    document.getElementById('output').textContent = "Please enter exactly 11 values.";
-                    showNotification('Please enter exactly 11 values.', 'error');
-                    return;
-                }
-                const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
-                const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
-                const i = valuesArray[8], j = valuesArray[9], k = valuesArray[10];
-                avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j + k) / 16.5;
+                avg = ((scores[0] + scores[1] + scores[2] + scores[3]) * 2 +
+                       (scores[4] + scores[5] + scores[6]) * 1.5 +
+                       scores[7] + scores[8] + scores[9] + scores[10]) / 16.5;
             } else {
-                if (valuesArray.length !== 10) {
-                    document.getElementById('output').textContent = "Please enter exactly 10 values.";
-                    showNotification('Please enter exactly 10 values.', 'error');
-                    return;
-                }
-                const a = valuesArray[0], b = valuesArray[1], c = valuesArray[2], d = valuesArray[3];
-                const e = valuesArray[4], f = valuesArray[5], g = valuesArray[6], h = valuesArray[7];
-                const i = valuesArray[8], j = valuesArray[9];
-                avg = ((a + b + c + d) * 2 + (e + f + g) * 1.5 + h + i + j) / 15.5;
+                avg = ((scores[0] + scores[1] + scores[2] + scores[3]) * 2 +
+                       (scores[4] + scores[5] + scores[6]) * 1.5 +
+                       scores[7] + scores[8] + scores[9]) / 15.5;
             }
 
-            const highest = Math.max(...valuesArray);
-            const lowest = Math.min(...valuesArray);
-            const sortedValues = valuesArray.slice().sort((a, b) => a - b);
-            const median = (sortedValues.length % 2 === 0) ? 
-                           (sortedValues[sortedValues.length / 2 - 1] + sortedValues[sortedValues.length / 2]) / 2 : 
-                           sortedValues[Math.floor(sortedValues.length / 2)];
-
-            document.getElementById('output').innerHTML = `
-                Average: ${avg.toFixed(6)}<br>
-                Highest: ${highest}<br>
-                Lowest: ${lowest}<br>
-                Median: ${median}
-            `;
-            showNotification('Calculation completed successfully.', 'success');
-            saveToLocalStorage();
+            document.getElementById('output').textContent = `Average: ${avg.toFixed(6)}`;
         }
 
         function resetForm() {
-            document.getElementById('option1').checked = true;
-            document.getElementById('values').value = '';
+            document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
             document.getElementById('output').textContent = '';
-            showNotification('Form has been reset.', 'success');
-            localStorage.removeItem('values');
         }
-
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-                document.body.removeChild(notification);
-            }, 3000);
-        }
-
-        function saveToLocalStorage() {
-            const values = document.getElementById('values').value;
-            localStorage.setItem('values', values);
-        }
-
-        function loadFromLocalStorage() {
-            const values = localStorage.getItem('values');
-            if (values) {
-                document.getElementById('values').value = values;
-            }
-        }
-
-        window.onload = loadFromLocalStorage;
     </script>
 </body>
 </html>
