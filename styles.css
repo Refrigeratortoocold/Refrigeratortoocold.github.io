@@ -46,4 +46,9 @@ button:hover {
     max-width: 100%;
     max-height: 400px;
     border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    opacity: 0;
 }
