@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Character Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ff5733;
+      padding: 20px 0;
+      color: white;
+    }
+    h1 {
+      margin: 0;
+    }
+    #search-container {
+      margin: 20px auto;
+      position: relative;
+      width: 300px;
+    }
+    #search-box {
+      padding: 10px;
+      width: 100%;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #character-list {
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 800px;
+    }
+    .character {
+      margin: 10px 0;
+    }
+    .character img {
+      max-width: 50px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .character p {
+      display: inline-block;
+      margin: 0;
+      vertical-align: middle;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Anime Character Finder</h1>
+  </header>
+
+  <div id="search-container">
+    <input id="search-box" type="text" placeholder="Enter Anime Title (e.g., Naruto)" />
+    <button onclick="findCharacters()">Search</button>
+  </div>
+
+  <div id="character-list"></div>
+
+  <script>
+    function findCharacters() {
+      const animeTitle = document.getElementById('search-box').value.trim();
+      const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(animeTitle)}&limit=1`;
+
+      if (!animeTitle) {
+        document.getElementById('character-list').innerHTML = `<p class="error">Please enter an anime title!</p>`;
+        return;
+      }
+
+      // Fetch the anime details first
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Anime not found');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.data.length === 0) {
+            throw new Error('Anime not found');
+          }
+
+          const animeId = data.data[0].mal_id; // Get the first result's ID
+          const characterUrl = `https://api.jikan.moe/v4/anime/${animeId}/characters`;
+
+          // Fetch characters for the anime
+          return fetch(characterUrl);
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error fetching characters');
+          }
+          return response.json();
+        })
+        .then(characterData => {
+          const characterList = document.getElementById('character-list');
+          characterList.innerHTML = '<h2>Characters:</h2>';
+
+          characterData.data.forEach(character => {
+            const characterElement = document.createElement('div');
+            characterElement.className = 'character';
+            characterElement.innerHTML = `
+              <img src="${character.character.images.jpg.image_url}" alt="${character.character.name}" />
+              <p>${character.character.name}</p>
+            `;
+            characterList.appendChild(characterElement);
+          });
+        })
+        .catch(error => {
+          document.getElementById('character-list').innerHTML = `<p class="error">${error.message}</p>`;
+        });
+    }
+  </script>
+</body>
+</html>
