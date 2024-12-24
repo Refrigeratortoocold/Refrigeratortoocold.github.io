@@ -2,8 +2,8 @@ const newImageButton = document.getElementById('newImageButton');
 const randomImage = document.getElementById('randomImage');
 
 newImageButton.addEventListener('click', () => {
-    // Adding a random query parameter to force reload of the image
-    const randomNum = Math.floor(Math.random() * 10000); // Generate a unique random number
+    // Generate a random number to append to the image URL to avoid caching
+    const randomNum = new Date().getTime(); // Current timestamp
     randomImage.classList.add('hidden'); // Hide image with a fade-out effect before changing it
     
     setTimeout(() => {
