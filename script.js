@@ -1,38 +1,22 @@
-// Fetch list of anime titles to populate the dropdown
-async function fetchAnimeList() {
-  const query = `
-    query {
-      Page(page: 1, perPage: 50) {  <!-- Change perPage to 50 or more -->
-        media(type: ANIME) {
-          id
-          title {
-            romaji
-          }
-        }
-      }
-    }
-  `;
+const newImageButton = document.getElementById('newImageButton');
+const randomImage = document.getElementById('randomImage');
 
-  const url = 'https://graphql.anilist.co';
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
-  };
+const UNSPLASH_ACCESS_KEY = 'YOUR_UNSPLASH_ACCESS_KEY'; // Replace with your actual Unsplash API key
+const API_URL = `https://api.unsplash.com/photos/random?client_id=${UNSPLASH_ACCESS_KEY}`;
 
-  try {
-    const response = await fetch(url, options);
-    const data = await response.json();
-    const animeList = data.data.Page.media;
+newImageButton.addEventListener('click', () => {
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            // Get the URL of the random image
+            const imageUrl = data[0].urls.regular;
+            // Set the image source to the random image URL
+            randomImage.src = imageUrl;
+        })
+        .catch(error => console.error('Error fetching image:', error));
+});
 
-    const animeSelect = document.getElementById('anime-select');
-    animeList.forEach(anime => {
-      const option = document.createElement('option');
-      option.value = anime.id;
-      option.textContent = anime.title.romaji;
-      animeSelect.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Error fetching anime list:", error);
-  }
-}
+// Load a random image on page load
+window.onload = () => {
+    newImageButton.click(); // Trigger the button click to load an image
+};
