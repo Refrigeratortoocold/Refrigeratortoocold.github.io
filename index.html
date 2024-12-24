@@ -1,200 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculate Average</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f4f4f9, #dfe9f3);
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 20px;
-            color: #4CAF50;
-        }
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .score-grid label {
-            text-align: left;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-        .score-grid input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        button {
-            display: inline-block;
-            width: calc(33% - 10px);
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .clear-btn {
-            background-color: #ff9800;
-        }
-        .clear-btn:hover {
-            background-color: #e68a00;
-        }
-        #output {
-            margin-top: 20px;
-            font-size: 1.3em;
-            color: #333;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #777;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Info Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ffcc00;
+      padding: 20px 0;
+      color: #333;
+    }
+    h1 {
+      margin: 0;
+    }
+    #search-container {
+      margin: 20px auto;
+    }
+    #search-box {
+      padding: 10px;
+      width: 250px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #pokemon-card {
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    img {
+      max-width: 150px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Calculate Average</h1>
+  <header>
+    <h1>Pokémon Info Finder</h1>
+  </header>
 
-        <div class="input-container">
-            <label>Select Option:</label>
-            <div>
-                <input type="radio" id="option1" name="option" value="1" checked>
-                <label for="option1">有选修课(÷16.5)</label><br>
-                <input type="radio" id="option2" name="option" value="2">
-                <label for="option2">无选修课(÷15.5)</label>
-            </div>
-        </div>
+  <div id="search-container">
+    <input id="search-box" type="text" placeholder="Enter Pokémon name (e.g., Pikachu)" />
+    <button onclick="getPokemon()">Search</button>
+  </div>
 
-        <div class="score-grid" id="scoreGrid">
-            <div>
-                <label for="score1">华文</label>
-                <input type="number" id="score1" min="0" max="100">
-            </div>
-            <div>
-                <label for="score2">国文</label>
-                <input type="number" id="score2" min="0" max="100">
-            </div>
-            <div>
-                <label for="score3">英文</label>
-                <input type="number" id="score3" min="0" max="100">
-            </div>
-            <div>
-                <label for="score4">数学</label>
-                <input type="number" id="score4" min="0" max="100">
-            </div>
-            <div>
-                <label for="score5">生物</label>
-                <input type="number" id="score5" min="0" max="100">
-            </div>
-            <div>
-                <label for="score6">物理</label>
-                <input type="number" id="score6" min="0" max="100">
-            </div>
-            <div>
-                <label for="score7">化学</label>
-                <input type="number" id="score7" min="0" max="100">
-            </div>
-            <div>
-                <label for="score8">学会</label>
-                <input type="number" id="score8" min="0" max="100">
-            </div>
-            <div>
-                <label for="score9">社科</label>
-                <input type="number" id="score9" min="0" max="100">
-            </div>
-            <div>
-                <label for="score10">体育</label>
-                <input type="number" id="score10" min="0" max="100">
-            </div>
-            <div id="extraSubject">
-                <label for="score11">选修 (若有)</label>
-                <input type="number" id="score11" min="0" max="100">
-            </div>
-        </div>
+  <div id="pokemon-card"></div>
 
-        <div class="button-container">
-            <button onclick="calculateAverage()">Calculate Average</button>
-            <button onclick="resetForm()" class="clear-btn">Clear All</button>
-            <button onclick="resetForm()" style="background-color: #f44336;">Reset</button>
-        </div>
+  <script>
+    function getPokemon() {
+      const pokemonName = document.getElementById('search-box').value.toLowerCase().trim();
+      const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
 
-        <div id="output"></div>
+      if (!pokemonName) {
+        document.getElementById('pokemon-card').innerHTML = `<p class="error">Please enter a Pokémon name!</p>`;
+        return;
+      }
 
-        <footer>Powered by Jia Sheng</footer>
-    </div>
-
-    <script>
-        function calculateAverage() {
-            const option = document.querySelector('input[name="option"]:checked').value;
-            const scores = [];
-
-            // Collect scores
-            for (let i = 1; i <= (option === "1" ? 11 : 10); i++) {
-                const score = parseFloat(document.getElementById(`score${i}`).value.trim());
-                if (isNaN(score)) {
-                    document.getElementById('output').textContent = "Please fill in all scores.";
-                    return;
-                }
-                scores.push(score);
-            }
-
-            let avg;
-            if (option === '1') {
-                avg = ((scores[0] + scores[1] + scores[2] + scores[3]) * 2 +
-                       (scores[4] + scores[5] + scores[6]) * 1.5 +
-                       scores[7] + scores[8] + scores[9] + scores[10]) / 16.5;
-            } else {
-                avg = ((scores[0] + scores[1] + scores[2] + scores[3]) * 2 +
-                       (scores[4] + scores[5] + scores[6]) * 1.5 +
-                       scores[7] + scores[8] + scores[9]) / 15.5;
-            }
-
-            document.getElementById('output').textContent = `Average: ${avg.toFixed(6)}`;
-        }
-
-        function resetForm() {
-            document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
-            document.getElementById('output').textContent = '';
-        }
-
-        function clearAllFields() {
-            document.querySelectorAll('input[type="number"], input[type="radio"]').forEach(input => {
-                if (input.type === "radio") input.checked = false;
-                else input.value = '';
-            });
-            document.getElementById('output').textContent = '';
-        }
-    </script>
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Pokémon not found');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const pokemonCard = document.getElementById('pokemon-card');
+          pokemonCard.innerHTML = `
+            <h2>${data.name.toUpperCase()}</h2>
+            <img src="${data.sprites.front_default}" alt="${data.name}" />
+            <p><strong>Type:</strong> ${data.types.map(type => type.type.name).join(', ')}</p>
+            <p><strong>Height:</strong> ${(data.height / 10).toFixed(1)} m</p>
+            <p><strong>Weight:</strong> ${(data.weight / 10).toFixed(1)} kg</p>
+          `;
+        })
+        .catch(error => {
+          document.getElementById('pokemon-card').innerHTML = `<p class="error">${error.message}</p>`;
+        });
+    }
+  </script>
 </body>
 </html>
