@@ -32,22 +32,19 @@
       justify-content: center;
       align-items: center;
     }
-    input {
+    select, button {
       padding: 12px;
-      width: 100%;
-      max-width: 350px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
       font-size: 1rem;
+      border-radius: 5px;
       margin-right: 10px;
     }
+    select {
+      width: 200px;
+    }
     button {
-      padding: 12px 20px;
       background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 1rem;
       cursor: pointer;
     }
     button:hover {
@@ -99,17 +96,65 @@
   </header>
 
   <div id="search-container">
-    <input id="search-box" type="text" placeholder="Enter anime title (e.g., Naruto)">
-    <button onclick="findCharacters()">Search</button>
+    <select id="anime-select">
+      <option value="">Choose an Anime/Manga</option>
+    </select>
+    <button onclick="findCharacters()">Search Characters</button>
   </div>
 
   <div id="results"></div>
 
   <script>
-    async function findCharacters() {
+    // Fetch list of anime titles to populate the dropdown
+    async function fetchAnimeList() {
       const query = `
-        query ($search: String) {
-          Media(search: $search, type: ANIME) {
+        query {
+          Page(page: 1, perPage: 10) {
+            media(type: ANIME) {
+              id
+              title {
+                romaji
+              }
+            }
+          }
+        }
+      `;
+
+      const url = 'https://graphql.anilist.co';
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        const animeList = data.data.Page.media;
+
+        const animeSelect = document.getElementById('anime-select');
+        animeList.forEach(anime => {
+          const option = document.createElement('option');
+          option.value = anime.id;
+          option.textContent = anime.title.romaji;
+          animeSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Error fetching anime list:", error);
+      }
+    }
+
+    // Fetch characters of the selected anime
+    async function findCharacters() {
+      const animeId = document.getElementById('anime-select').value;
+      if (!animeId) {
+        alert('Please select an anime!');
+        return;
+      }
+
+      const query = `
+        query ($id: Int) {
+          Media(id: $id) {
             characters {
               edges {
                 node {
@@ -125,22 +170,15 @@
           }
         }
       `;
-      
-      const animeTitle = document.getElementById('search-box').value.trim();
-      if (!animeTitle) {
-        alert('Please enter an anime title!');
-        return;
-      }
 
-      const variables = { search: animeTitle };
+      const variables = { id: parseInt(animeId) };
       const url = 'https://graphql.anilist.co';
-      
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, variables }),
       };
-      
+
       try {
         const response = await fetch(url, options);
         const data = await response.json();
@@ -150,7 +188,7 @@
         resultsContainer.innerHTML = ''; // Clear previous results
         
         if (characters.length === 0) {
-          resultsContainer.innerHTML = `<p class="error">No characters found for "${animeTitle}".</p>`;
+          resultsContainer.innerHTML = `<p class="error">No characters found for this anime.</p>`;
           return;
         }
 
@@ -169,6 +207,10 @@
         console.error(error);
       }
     }
+
+    // Initialize the anime list when the page loads
+    window.onload = fetchAnimeList;
+
   </script>
 
 </body>
