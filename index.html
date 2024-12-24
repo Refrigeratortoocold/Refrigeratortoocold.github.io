@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon Info Finder</title>
+  <title>Pokémon Info Finder with Autocomplete</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,10 +22,12 @@
     }
     #search-container {
       margin: 20px auto;
+      position: relative;
+      width: 300px;
     }
     #search-box {
       padding: 10px;
-      width: 250px;
+      width: 100%;
       border: 2px solid #ddd;
       border-radius: 5px;
     }
@@ -36,10 +38,30 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-left: 10px;
+      margin-top: 10px;
     }
     button:hover {
       background-color: #0056b3;
+    }
+    #suggestions {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 5px;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+    .suggestion {
+      padding: 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .suggestion:hover {
+      background-color: #f0f0f0;
     }
     #pokemon-card {
       margin: 20px auto;
@@ -64,13 +86,47 @@
   </header>
 
   <div id="search-container">
-    <input id="search-box" type="text" placeholder="Enter Pokémon name (e.g., Pikachu)" />
+    <input id="search-box" type="text" placeholder="Enter Pokémon name (e.g., Pikachu)" oninput="showSuggestions()" />
+    <div id="suggestions"></div>
     <button onclick="getPokemon()">Search</button>
   </div>
 
   <div id="pokemon-card"></div>
 
   <script>
+    let allPokemonNames = [];
+
+    // Fetch all Pokémon names on page load
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=1000')
+      .then(response => response.json())
+      .then(data => {
+        allPokemonNames = data.results.map(pokemon => pokemon.name);
+      })
+      .catch(error => console.error('Error fetching Pokémon names:', error));
+
+    function showSuggestions() {
+      const input = document.getElementById('search-box').value.toLowerCase();
+      const suggestions = document.getElementById('suggestions');
+      suggestions.innerHTML = ''; // Clear previous suggestions
+
+      if (!input) return;
+
+      // Filter Pokémon names that include the input
+      const filteredNames = allPokemonNames.filter(name => name.includes(input));
+
+      // Display suggestions
+      filteredNames.forEach(name => {
+        const suggestion = document.createElement('div');
+        suggestion.className = 'suggestion';
+        suggestion.textContent = name;
+        suggestion.onclick = () => {
+          document.getElementById('search-box').value = name;
+          suggestions.innerHTML = ''; // Clear suggestions
+        };
+        suggestions.appendChild(suggestion);
+      });
+    }
+
     function getPokemon() {
       const pokemonName = document.getElementById('search-box').value.toLowerCase().trim();
       const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
