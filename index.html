@@ -109,7 +109,7 @@
     async function fetchAnimeList() {
       const query = `
         query {
-          Page(page: 1, perPage: 50) {  <!-- Changed perPage to 50 -->
+          Page(page: 1, perPage: 50) {  <!-- Change perPage to 50 -->
             media(type: ANIME) {
               id
               title {
@@ -130,6 +130,7 @@
       try {
         const response = await fetch(url, options);
         const data = await response.json();
+        console.log("Fetched anime data:", data); // Log response data to check if it's coming through
         const animeList = data.data.Page.media;
 
         const animeSelect = document.getElementById('anime-select');
@@ -182,7 +183,8 @@
       try {
         const response = await fetch(url, options);
         const data = await response.json();
-        
+        console.log("Fetched characters data:", data); // Log character data to check if it's coming through
+
         const characters = data.data.Media.characters.edges;
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = ''; // Clear previous results
@@ -192,4 +194,26 @@
           return;
         }
 
-        characters.forE
+        characters.forEach(character => {
+          const characterDiv = document.createElement('div');
+          characterDiv.className = 'character';
+
+          characterDiv.innerHTML = `
+            <img src="${character.node.image.large}" alt="${character.node.name.full}">
+            <h3>${character.node.name.full}</h3>
+          `;
+          resultsContainer.appendChild(characterDiv);
+        });
+      } catch (error) {
+        document.getElementById('results').innerHTML = '<p class="error">Error fetching data. Please try again.</p>';
+        console.error(error);
+      }
+    }
+
+    // Initialize the anime list when the page loads
+    window.onload = fetchAnimeList;
+
+  </script>
+
+</body>
+</html>
