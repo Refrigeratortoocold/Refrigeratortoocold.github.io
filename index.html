@@ -109,7 +109,7 @@
     async function fetchAnimeList() {
       const query = `
         query {
-          Page(page: 1, perPage: 10) {
+          Page(page: 1, perPage: 50) {  <!-- Changed perPage to 50 -->
             media(type: ANIME) {
               id
               title {
@@ -192,26 +192,4 @@
           return;
         }
 
-        characters.forEach(character => {
-          const characterDiv = document.createElement('div');
-          characterDiv.className = 'character';
-
-          characterDiv.innerHTML = `
-            <img src="${character.node.image.large}" alt="${character.node.name.full}">
-            <h3>${character.node.name.full}</h3>
-          `;
-          resultsContainer.appendChild(characterDiv);
-        });
-      } catch (error) {
-        document.getElementById('results').innerHTML = '<p class="error">Error fetching data. Please try again.</p>';
-        console.error(error);
-      }
-    }
-
-    // Initialize the anime list when the page loads
-    window.onload = fetchAnimeList;
-
-  </script>
-
-</body>
-</html>
+        characters.forE
