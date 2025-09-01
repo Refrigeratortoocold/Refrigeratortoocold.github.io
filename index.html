@@ -1,107 +1,64 @@
-<!doctype html>
-<html lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>苏佳盛 — 科技 / 数学 / 创新</title>
-  <meta name="description" content="苏佳盛（JiaSheng）个人主页 — 科技、数学与项目。内置比赛资料 + AI 查询助手。" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>苏佳盛 · JiaSheng</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="starfield"></canvas>
-
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo-hex">SJ</div>
-      <div class="brand-text">
-        <div class="name">苏佳盛 <span class="alias">JiaSheng</span></div>
-        <div class="subtitle">高中生 · 科技 / 数学爱好者</div>
-      </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>苏佳盛 JiaSheng</h1>
+      <p>High School Inventor · Mathematician · Explorer of Ideas</p>
+      <a href="#about" class="btn">Explore My Journey</a>
     </div>
+  </section>
 
-    <nav class="nav">
-      <a href="#intro">简介</a>
-      <a href="#projects">项目</a>
-      <a href="#awards">奖项</a>
-      <a href="#contact">联系</a>
-    </nav>
+  <!-- About Section -->
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>I am JiaSheng, a Senior Three student passionate about mathematics, science, programming, and inventions. 
+    I have participated in numerous competitions such as Hua Luogeng Cup, Tan Kah Kee Award, and national science contests. 
+    Beyond academics, I enjoy basketball, running, and chess. My dream is to travel the world and explore philosophy.</p>
+  </section>
 
-    <div class="top-actions">
-      <button id="themeToggle" title="切换亮/暗">🌓</button>
-      <a class="ghost-btn" href="https://github.com/refirgeratortoocold" target="_blank" rel="noopener">GitHub ↗</a>
+  <!-- Autobiography -->
+  <section id="autobiography" class="section">
+    <h2>Autobiography</h2>
+    <div class="timeline">
+      <div class="timeline-item"><span>2020</span> Started participating in math and science competitions.</div>
+      <div class="timeline-item"><span>2022</span> Won medals in national and international contests.</div>
+      <div class="timeline-item"><span>2024</span> Joined Monash Engineering Research Program.</div>
+      <div class="timeline-item"><span>2025</span> Awarded in Tan Kah Kee Young Inventors' Award & multiple scholarships.</div>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <section id="hero" class="panel glass">
-      <div class="hero-left">
-        <div class="eyebrow">你好 — 我是</div>
-        <h1 class="headline">苏佳盛 <span class="neon">.</span></h1>
-        <p class="lead">高中理科生 · IMO 国家选拔 R2 · 热爱编程、工程与深入思考。喜欢篮球与远行。</p>
-        <div class="ctas">
-          <a class="btn" href="#projects">我的项目</a>
-          <a class="btn ghost" href="#awards">竞赛与奖项</a>
-        </div>
-      </div>
+  <!-- Competitions -->
+  <section id="competitions" class="section">
+    <h2>Competitions & Awards</h2>
+    <p>[Coming Soon: Interactive cards with links to official sites]</p>
+  </section>
 
-      <div class="hero-right">
-        <div class="avatar-shell" id="avatarShell">
-          <img id="avatarImg" src="assets/avatar.jpg" alt="avatar" />
-          <div class="glow"></div>
-        </div>
-        <div class="info-capsule glass small">
-          <div class="capsule-line">学校：巴生兴华中学（Hin Hua High School）</div>
-          <div class="capsule-line">流派：理科 · Senior Three</div>
-          <div class="capsule-line">爱好：篮球 · 编程 · 旅行</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="panel">
-      <h2 class="section-title">精选项目</h2>
-      <div id="projectsGrid" class="grid"></div>
-    </section>
-
-    <section id="awards" class="panel glass">
-      <h2 class="section-title">竞赛 & 奖项（精选）</h2>
-      <div id="timeline" class="timeline"></div>
-    </section>
-
-    <section id="gallery" class="panel">
-      <h2 class="section-title">图像 / 作品走廊</h2>
-      <div id="galleryGrid" class="grid"></div>
-    </section>
-
-    <section id="contact" class="panel glass">
-      <h2 class="section-title">联系我</h2>
-      <p>邮箱：<a id="mailLink" href="mailto:your-email@example.com">your-email@example.com</a></p>
-      <div class="contact-actions">
-        <a class="btn" href="mailto:your-email@example.com">发邮件</a>
-        <a class="btn ghost" href="https://github.com/refirgeratortoocold" target="_blank" rel="noopener">查看 GitHub</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div>© <span id="year"></span> 苏佳盛</div>
-  </footer>
-
-  <!-- AI Assistant floating button + modal -->
-  <button id="openAssistant" class="assistant-btn" title="问 AI：比赛 / 资料 / 解释">AI 助手</button>
-
-  <div id="assistantModal" class="assistant-modal" hidden>
-    <div class="assistant-header">
-      <div>AI 助手</div>
-      <button id="closeAssistant" title="关闭">✕</button>
+  <!-- AI Assistant -->
+  <section id="ai" class="section">
+    <h2>Ask My AI Assistant</h2>
+    <div class="chatbox">
+      <div id="chat-log"></div>
+      <input type="text" id="user-input" placeholder="Ask me about competitions..." />
+      <button onclick="sendMessage()">Send</button>
     </div>
-    <div id="assistantMessages" class="assistant-messages" role="log" aria-live="polite"></div>
+  </section>
 
-    <div class="assistant-controls">
-      <input id="assistantInput" placeholder="问我关于比赛、规则、流程或任何你不懂的事项…" />
-      <button id="assistantSend" class="btn">发送</button>
-    </div>
-  </div>
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <h2>Contact Me</h2>
+    <p>Email: <a href="mailto:sujiasheng@example.com">sujiasheng@example.com</a></p>
+    <p>GitHub: <a href="https://github.com/refrigeratortoocold" target="_blank">refrigeratortoocold</a></p>
+  </section>
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
