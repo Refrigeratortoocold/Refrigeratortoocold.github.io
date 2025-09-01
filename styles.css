@@ -1,62 +1,7 @@
-/* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: #fff; overflow-x: hidden; }
-
-/* Hero */
-.hero {
-  height: 100vh;
-  background: linear-gradient(135deg, #000000, #0a0a0a, #1c1c1e);
-  display: flex; justify-content: center; align-items: center;
-  text-align: center; position: relative;
+body {
+  font-family: sans-serif;
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 50px;
 }
-.hero-content h1 { font-size: 4rem; color: #fff; margin-bottom: 1rem; }
-.hero-content p { font-size: 1.5rem; color: #aaa; margin-bottom: 2rem; }
-.btn {
-  background: #fff; color: #000; padding: 12px 30px; border-radius: 30px;
-  text-decoration: none; font-weight: bold; transition: all 0.3s ease;
-}
-.btn:hover { background: #0ff; transform: scale(1.05); }
-
-/* Sections */
-.section { padding: 80px 20px; max-width: 900px; margin: auto; text-align: center; }
-.section h2 { font-size: 2.5rem; margin-bottom: 20px; color: #0ff; }
-.section p { color: #ccc; font-size: 1.2rem; }
-
-/* Timeline */
-.timeline { border-left: 2px solid #0ff; padding-left: 20px; text-align: left; }
-.timeline-item { margin-bottom: 20px; }
-.timeline-item span { color: #0ff; font-weight: bold; margin-right: 10px; }
-
-/* Cards */
-.cards { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.card {
-  background: #111; padding: 20px; border-radius: 15px; width: 250px;
-  box-shadow: 0 0 15px rgba(0,255,255,0.2); transition: transform 0.3s;
-}
-.card h3 { color: #fff; margin-bottom: 10px; }
-.card p { color: #aaa; margin-bottom: 15px; }
-.card a { color: #0ff; text-decoration: none; font-weight: bold; }
-.card:hover { transform: translateY(-10px); }
-
-/* Fade-in effect */
-.fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-
-/* Chatbox */
-#chat-button {
-  position: fixed; bottom: 20px; right: 20px;
-  background: #0ff; color: #000; border-radius: 50%;
-  width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem; cursor: pointer; box-shadow: 0 0 10px rgba(0,255,255,0.6);
-}
-#chatbox {
-  position: fixed; bottom: 90px; right: 20px;
-  width: 300px; background: #111; border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0,255,255,0.3); overflow: hidden;
-}
-#chatbox.hidden { display: none; }
-#chat-log { height: 250px; overflow-y: auto; padding: 15px; font-size: 0.9rem; }
-#chat-log p { margin: 5px 0; }
-.chat-input { display: flex; border-top: 1px solid #222; }
-.chat-input input { flex: 1; padding: 10px; border: none; background: #000; color: #fff; }
-.chat-input button { background: #0ff; border: none; padding: 10px 15px; cursor: pointer; }
