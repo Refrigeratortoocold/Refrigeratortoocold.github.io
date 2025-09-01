@@ -1,19 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-Hans">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Image from Lorem Picsum</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>苏佳盛 — 科技 / 数学 / 创新</title>
+  <meta name="description" content="苏佳盛（JiaSheng）个人主页 — 科技、数学与项目。内置比赛资料 + AI 查询助手。" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Random Image from Lorem Picsum</h1>
-        <button id="newImageButton">Get New Image</button>
-        <div id="imageContainer">
-            <img id="randomImage" src="https://picsum.photos/400/300?random=1" alt="Random Lorem Picsum Image">
-        </div>
+  <canvas id="starfield"></canvas>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-hex">SJ</div>
+      <div class="brand-text">
+        <div class="name">苏佳盛 <span class="alias">JiaSheng</span></div>
+        <div class="subtitle">高中生 · 科技 / 数学爱好者</div>
+      </div>
     </div>
-    <script src="script.js"></script>
+
+    <nav class="nav">
+      <a href="#intro">简介</a>
+      <a href="#projects">项目</a>
+      <a href="#awards">奖项</a>
+      <a href="#contact">联系</a>
+    </nav>
+
+    <div class="top-actions">
+      <button id="themeToggle" title="切换亮/暗">🌓</button>
+      <a class="ghost-btn" href="https://github.com/refirgeratortoocold" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="panel glass">
+      <div class="hero-left">
+        <div class="eyebrow">你好 — 我是</div>
+        <h1 class="headline">苏佳盛 <span class="neon">.</span></h1>
+        <p class="lead">高中理科生 · IMO 国家选拔 R2 · 热爱编程、工程与深入思考。喜欢篮球与远行。</p>
+        <div class="ctas">
+          <a class="btn" href="#projects">我的项目</a>
+          <a class="btn ghost" href="#awards">竞赛与奖项</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="avatar-shell" id="avatarShell">
+          <img id="avatarImg" src="assets/avatar.jpg" alt="avatar" />
+          <div class="glow"></div>
+        </div>
+        <div class="info-capsule glass small">
+          <div class="capsule-line">学校：巴生兴华中学（Hin Hua High School）</div>
+          <div class="capsule-line">流派：理科 · Senior Three</div>
+          <div class="capsule-line">爱好：篮球 · 编程 · 旅行</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="panel">
+      <h2 class="section-title">精选项目</h2>
+      <div id="projectsGrid" class="grid"></div>
+    </section>
+
+    <section id="awards" class="panel glass">
+      <h2 class="section-title">竞赛 & 奖项（精选）</h2>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <section id="gallery" class="panel">
+      <h2 class="section-title">图像 / 作品走廊</h2>
+      <div id="galleryGrid" class="grid"></div>
+    </section>
+
+    <section id="contact" class="panel glass">
+      <h2 class="section-title">联系我</h2>
+      <p>邮箱：<a id="mailLink" href="mailto:your-email@example.com">your-email@example.com</a></p>
+      <div class="contact-actions">
+        <a class="btn" href="mailto:your-email@example.com">发邮件</a>
+        <a class="btn ghost" href="https://github.com/refirgeratortoocold" target="_blank" rel="noopener">查看 GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>© <span id="year"></span> 苏佳盛</div>
+  </footer>
+
+  <!-- AI Assistant floating button + modal -->
+  <button id="openAssistant" class="assistant-btn" title="问 AI：比赛 / 资料 / 解释">AI 助手</button>
+
+  <div id="assistantModal" class="assistant-modal" hidden>
+    <div class="assistant-header">
+      <div>AI 助手</div>
+      <button id="closeAssistant" title="关闭">✕</button>
+    </div>
+    <div id="assistantMessages" class="assistant-messages" role="log" aria-live="polite"></div>
+
+    <div class="assistant-controls">
+      <input id="assistantInput" placeholder="问我关于比赛、规则、流程或任何你不懂的事项…" />
+      <button id="assistantSend" class="btn">发送</button>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
